@@ -51,6 +51,7 @@ async function login() {
 
   if (regionCode) {
     const ocir = `${regionCode}.ocir.io`;
+    core.info('OCIR: {ocir}');
 
     const namespace = (
       await ac.getContainerConfiguration({
@@ -60,10 +61,12 @@ async function login() {
 
     const ociUser = (await ic.getUser({userId: authProvider.getUser()})).user
       .name;
+    core.info('ociUser: {ociUser}');
     const ociToken = core.getInput('auth_token', {required: true});
     const authToken = Buffer.from(
       `${namespace}/${ociUser}:${ociToken}`
     ).toString('base64');
+    core.info('authToken: {authToken}');
 
     const dockerConfigPath = path.join(os.homedir(), '.docker', 'config.json');
 
